@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import * as joi from '@hapi/joi';
 import { APP_FILTER } from '@nestjs/core';
 import { CategoriesModule } from './categories/categories.module';
+import { SubcategoriesModule } from './subcategories/subcategories.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { CategoriesModule } from './categories/categories.module';
     }),
     UsersModule,
     AuthModule,
-    CategoriesModule,  
+    CategoriesModule,
+    SubcategoriesModule,  
   ],
   controllers: [],
   providers: [{
