@@ -1,10 +1,13 @@
+import { CreateProductsDto } from './../products/dto/create-products.dto';
+import { CreateProductDto } from './../products/dto/create-product.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
-import { Body, Controller, Get, Param, Patch, ParseIntPipe, Delete, HttpCode, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, ParseIntPipe, Delete, HttpCode, UseGuards, Post, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
 import { CreateSubcategoryDto } from './dto/create-subcategory.dto';
 import { SubcategoriesService } from './subcategories.service';
 
 @Controller('subcategories')
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(ClassSerializerInterceptor)
 export class SubcategoriesController {
     constructor(
         private readonly subcategoryService: SubcategoriesService
@@ -18,6 +21,16 @@ export class SubcategoriesController {
     @Get('/:id')
     async getSubcategoryById(@Param('id', ParseIntPipe) id: number) {
         return await this.subcategoryService.getSubcategoryById(id);
+    }
+
+    @Post('/:id/product')
+    async createProduct(@Param('id', ParseIntPipe) id: number, @Body() createProductDto: CreateProductDto) {
+        return await this.subcategoryService.createProduct(id, createProductDto);
+    }
+
+    @Post('/:id/products')
+    async createProductsForSubcategory(@Param('id', ParseIntPipe) id: number, @Body() productsDto: CreateProductsDto) {
+        return await this.subcategoryService.createProducts(id, productsDto.products);
     }
 
     @Patch('/:id')

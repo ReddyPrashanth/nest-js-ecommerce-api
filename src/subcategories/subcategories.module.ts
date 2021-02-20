@@ -1,3 +1,4 @@
+import { ProductsModule } from './../products/products.module';
 import { SubcategoryRepository } from './subcategory.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
@@ -6,7 +7,8 @@ import { SubcategoriesService } from './subcategories.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([SubcategoryRepository])
+    TypeOrmModule.forFeature([SubcategoryRepository]),
+    ProductsModule
   ],
   controllers: [SubcategoriesController],
   providers: [SubcategoriesService],

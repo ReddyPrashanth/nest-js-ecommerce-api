@@ -1,3 +1,5 @@
+import { CreateProductDto } from './../products/dto/create-product.dto';
+import { ProductsService } from './../products/products.service';
 import { Category } from './../categories/category.entity';
 import { CreateSubcategoryDto } from './dto/create-subcategory.dto';
 import { SubcategoryNotFoundException } from './exceptions/subcategory-not-found.exception';
@@ -6,12 +8,14 @@ import { Injectable, HttpException, HttpStatus, BadRequestException } from '@nes
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subcategory } from './subcategory.entity';
 import { PostgresErrorCode } from 'src/database/postgres-error-code.enum';
+import { getUniqueViolationKey } from '../app.helper';
 
 @Injectable()
 export class SubcategoriesService {
     constructor(
         @InjectRepository(SubcategoryRepository)
-        private readonly subcategoryRepository: SubcategoryRepository
+        private readonly subcategoryRepository: SubcategoryRepository,
+        private readonly productsService: ProductsService
     ) {}
     
     async getAllSubcategories(): Promise<Subcategory[]> {
@@ -56,13 +60,22 @@ export class SubcategoriesService {
             return subcategories;
         }catch(error) {
             if(error?.code === PostgresErrorCode.UniqueViolation){
-                const detail = error?.detail as string;
-                const matched = detail.match(/\(([^)]+)\)/g);
-                throw new BadRequestException(`Subcategory ${matched[1]} is taken.`);
+                const value = getUniqueViolationKey(error?.detail as string);
+                throw new BadRequestException(`Subcategory ${value} is taken.`);
             }
             throw new HttpException('Something went wrong.', HttpStatus.INTERNAL_SERVER_ERROR);
         }
         
+    }
+
+    async createProduct(id: number, createProductDto: CreateProductDto) {
+        const subcategory = await this.getSubcategoryById(id);
+        return await this.productsService.createProduct(subcategory, createProductDto)
+    }
+
+    async createProducts(id: number, productsDto: CreateProductDto[]) {
+        const subcategory = await this.getSubcategoryById(id);
+        return await this.productsService.createProducts(subcategory, productsDto);
     }
 
     async updateSubcategoryName(id: number, createSubcategoryDto: CreateSubcategoryDto): Promise<Subcategory> {

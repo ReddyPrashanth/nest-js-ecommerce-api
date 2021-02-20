@@ -8,6 +8,7 @@ import * as joi from '@hapi/joi';
 import { APP_FILTER } from '@nestjs/core';
 import { CategoriesModule } from './categories/categories.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
     UsersModule,
     AuthModule,
     CategoriesModule,
-    SubcategoriesModule,  
+    SubcategoriesModule,
+    ProductsModule,  
   ],
   controllers: [],
   providers: [{
