@@ -1,4 +1,5 @@
 import { CreateProductDto } from './dto/create-product.dto';
+import { ProductPaginationParamsDto } from './dto/product-pagination-params.dto';
 import { Subcategory } from 'src/subcategories/subcategory.entity';
 import { ProductNotFoundException } from './exceptions/product-not-found.exception';
 import { ProductRepository } from './product.repository';
@@ -15,8 +16,8 @@ export class ProductsService {
         private readonly productRepository: ProductRepository
     ) {}
 
-    async getProducts(): Promise<Product[]> {
-        return await this.productRepository.find();
+    async getProducts(params: ProductPaginationParamsDto, subcategoryId?: number): Promise<[Product[], number]> {
+        return await this.productRepository.getProducts(params, subcategoryId);
     }
 
     async getProductById(id: number): Promise<Product> {

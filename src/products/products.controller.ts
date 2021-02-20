@@ -1,7 +1,8 @@
+import { ProductPaginationParamsDto } from './dto/product-pagination-params.dto';
 import { JwtAuthGuard } from './../auth/jwt-auth.guard';
 import { CreateProductDto } from './dto/create-product.dto';
 import { ProductsService } from './products.service';
-import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Put, UseGuards, UseInterceptors, ClassSerializerInterceptor } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Put, UseGuards, UseInterceptors, ClassSerializerInterceptor, Query } from '@nestjs/common';
 
 @Controller('products')
 @UseGuards(JwtAuthGuard)
@@ -12,8 +13,13 @@ export class ProductsController {
     ) {}
 
     @Get('')
-    async getProducts() {
-        return await this.productsService.getProducts();
+    async getProducts(@Query() params: ProductPaginationParamsDto) {
+        const [products, count] = await this.productsService.getProducts(params);
+        return {
+            data: products,
+            limit: params.limit,
+            count
+        }
     }
 
     @Get("/:id")

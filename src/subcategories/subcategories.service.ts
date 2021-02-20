@@ -1,3 +1,4 @@
+import { ProductPaginationParamsDto } from './../products/dto/product-pagination-params.dto';
 import { CreateProductDto } from './../products/dto/create-product.dto';
 import { ProductsService } from './../products/products.service';
 import { Category } from './../categories/category.entity';
@@ -20,6 +21,10 @@ export class SubcategoriesService {
     
     async getAllSubcategories(): Promise<Subcategory[]> {
         return await this.subcategoryRepository.find();
+    }
+
+    async getProducts(id: number, params: ProductPaginationParamsDto) {
+        return await this.productsService.getProducts(params, id);
     }
 
     async getSubcategoryById(id: number): Promise<Subcategory> {
