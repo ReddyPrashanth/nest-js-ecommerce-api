@@ -62,13 +62,7 @@ export class ProductsService {
 
     async updateProduct(id: number, updateProductDto: CreateProductDto): Promise<Product> {
         const product = await this.getProductById(id);
-        const {name, shortdescription, price, stock} = updateProductDto;
-        product.name = name;
-        product.shortdescription = shortdescription;
-        product.price = price;
-        product.stock = stock;
-        await product.save();
-        return product; 
+        return this.productRepository.updateProduct(product, updateProductDto); 
     }
 
     async deleteProduct(id: number) {

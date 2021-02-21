@@ -1,3 +1,4 @@
+import { CreateProductDto } from './dto/create-product.dto';
 import { ProductPaginationParamsDto } from './dto/product-pagination-params.dto';
 import { EntityRepository, Repository } from "typeorm";
 import { Product } from "./product.entity";
@@ -21,5 +22,15 @@ export class ProductRepository extends Repository<Product> {
         const [products, count] = await query.limit(limit)
                                              .getManyAndCount();
         return [products, count];
+    }
+
+    async updateProduct(product: Product, updateProductDto: CreateProductDto): Promise<Product> {
+        const {name, shortdescription, price, stock} = updateProductDto;
+        product.name = name;
+        product.shortdescription = shortdescription;
+        product.price = price;
+        product.stock = stock;
+        await this.save(product);
+        return product;
     }
 }

@@ -32,5 +32,5 @@ export class Product extends BaseEntity {
     updatedat?: Date;
 
     @Column()
-    subcategoryId: number;
+    subcategoryId?: number;
 }
