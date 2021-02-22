@@ -9,6 +9,7 @@ import { APP_FILTER } from '@nestjs/core';
 import { CategoriesModule } from './categories/categories.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { ProductsModule } from './products/products.module';
+import { ProductoptionsModule } from './productoptions/productoptions.module';
 
 @Module({
   imports: [
@@ -29,7 +30,8 @@ import { ProductsModule } from './products/products.module';
     AuthModule,
     CategoriesModule,
     SubcategoriesModule,
-    ProductsModule,  
+    ProductsModule,
+    ProductoptionsModule,  
   ],
   controllers: [],
   providers: [{

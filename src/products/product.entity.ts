@@ -1,5 +1,6 @@
+import { Optionset } from './../productoptions/optionset.entity';
 import { Subcategory } from './../subcategories/subcategory.entity';
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 @Entity()
@@ -33,4 +34,8 @@ export class Product extends BaseEntity {
 
     @Column()
     subcategoryId?: number;
+
+    @ManyToMany(type => Optionset, {cascade: true})
+    @JoinTable()
+    optionsets: Optionset[];
 }
